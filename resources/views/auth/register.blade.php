@@ -39,6 +39,17 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <div class="form-group row">
+            <div class="col-md-6 offset-md-4">
+                <div class="g-recaptcha" data-sitekey="{{env('CAPTCHA_KEY')}}" style="padding-top: 1.5rem; padding-bottom: 1rem"></div>
+                @if($errors->has('g-recaptcha-response'))
+                    <span class="invalid-feedback" style="display:block">
+                        <h1>{{$errors->first('g-recaptcha-response')}}</h1>
+                    </span>
+                @endif
+            </div>
+        </div>
+
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
