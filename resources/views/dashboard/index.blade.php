@@ -36,13 +36,15 @@
                     </div>
 
                     <div class="text-sm text-gray-600 mb-4">
-                        <strong>Author:</strong> {{ $post->user->name }}
+                        <strong>Author:</strong> {{ $post->user->name ?? 'Unknown Author' }}
                     </div>
+
 
                     <div class="flex items-center justify-between">
                         <a href="{{ route('posts.show', $post->id) }}" class="text-blue-500 hover:text-blue-700 font-semibold">Read More</a>
-                        <!-- Kondisi untuk menampilkan tombol edit dan delete jika user adalah pemilik postingan -->
-                        @if ($post->user_id == auth()->id())
+                        
+                        <!-- Kondisi untuk menampilkan tombol edit dan delete jika user adalah admin atau pemilik postingan -->
+                        @if (auth()->user() && (auth()->id() === 1 && auth()->user()->name === 'admin' || $post->user_id == auth()->id()))
                             <div class="flex items-center space-x-3">
                                 <a href="{{ route('posts.edit', $post->id) }}" class="text-gray-500 hover:text-blue-500 font-semibold">Edit</a>
                                 <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure?');" class="inline">
@@ -53,6 +55,7 @@
                             </div>
                         @endif
                     </div>
+
                 </div>
             </div>
             @endforeach

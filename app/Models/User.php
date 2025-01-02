@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Tymon\JWTAuth\Contracts\JWTSubject;  // Import JWTSubject
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, JWTSubject  // Implement JWTSubject
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -45,5 +46,25 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
             'banned_until' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the identifier that will be stored in the JWT payload.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();  // Typically the user's primary key (id)
+    }
+
+    /**
+     * Get custom claims to include in the JWT payload.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];  // You can add custom claims here (e.g., roles)
     }
 }

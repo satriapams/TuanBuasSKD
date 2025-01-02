@@ -5,6 +5,8 @@ use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\BackupController;
+use App\Http\Controllers\AuthController;
 
 
 
@@ -27,5 +29,12 @@ Route::middleware('auth')->group(function () {
     // Routes for Blog Posts
     Route::resource('posts', PostController::class);
 });
+
+Route::get('/backup-database', [BackupController::class, 'backupDatabase'])->name('backup.database');
+Route::get('/download-backup/{fileName}', [BackupController::class, 'downloadBackup'])->name('backup.download');
+Route::post('/restore-database', [BackupController::class, 'restoreDatabase'])->name('backup.restore');
+Route::post('login', [AuthController::class, 'login']);
+
+
 
 require __DIR__.'/auth.php';

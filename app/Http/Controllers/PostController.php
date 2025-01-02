@@ -121,9 +121,7 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        if ($post->image && Storage::disk('public')->exists($post->image)) {
-            Storage::disk('public')->delete($post->image);
-        }
+
         $post->delete();
 
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
